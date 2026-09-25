@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande #{{ commande.id }} - MyBookstore{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('app_commande_index') }}">Mes Commandes</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Détails #{{ commande.id }}</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">Articles de la commande #{{ commande.id }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Livre</th>
+                                        <th class="text-center">Prix Unitaire</th>
+                                        <th class="text-center">Quantité</th>
+                                        <th class="text-end">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for ligne in commande.ligneCommandes %}
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    {% if ligne.livre.imageCouverture %}
+                                                        <img src="{{ asset('uploads/images/livres/' ~ ligne.livre.imageCouverture) }}" alt="{{ ligne.livre.titre }}" style="width: 50px; height: 70px; object-fit: cover; margin-right: 15px;" class="rounded shadow-sm">
+                                                    {% endif %}
+                                                    <div>
+                                                        <h6 class="mb-0">{{ ligne.livre.titre }}</h6>
+                                                        <small class="text-muted">Par {{ ligne.livre.auteurs|join(', ') }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">{{ ligne.prixUnitaire }} €</td>
+                                            <td class="text-center">{{ ligne.quantite }}</td>
+                                            <td class="text-end fw-bold">{{ ligne.prixUnitaire * ligne.quantite }} €</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-end"><strong>Total de la commande :</strong></td>
+                                        <td class="text-end text-primary fs-5 fw-bold">{{ commande.montantTotal }} €</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Informations Livraison</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Destinataire :</strong> {{ commande.user.prenom }} {{ commande.user.nom }}</p>
+                        <p><strong>Adresse :</strong><br>{{ commande.user.adresse ?: 'Non renseignée' }}</p>
+                        <p><strong>Téléphone :</strong> {{ commande.user.telephone ?: 'Non renseigné' }}</p>
+                        <hr>
+                        <p><strong>Date de commande :</strong> {{ commande.dateCommande|date('d/m/Y H:i') }}</p>
+                        <p><strong>Statut :</strong> 
+                            <span class="badge {{ commande.statut == 'Validée' ? 'bg-success' : 'bg-warning' }}">
+                                {{ commande.statut }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="d-grid">
+                    <a href="{{ path('app_commande_index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Retour à mes commandes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

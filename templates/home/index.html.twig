@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - MyBookstore{% endblock %}
+
+{% block body %}
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5 text-center">
+            <h1 class="display-5 fw-bold">Bienvenue sur MyBookstore</h1>
+            <p class="col-md-12 fs-4">Découvrez notre large sélection de livres, des classiques aux dernières nouveautés.</p>
+            <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg">Créer un compte</a>
+        </div>
+    </div>
+
+    <h2 class="mb-4">Dernières nouveautés</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for livre in livres %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    {% if livre.imageCouverture %}
+                        <img src="{{ asset('uploads/images/livres/' ~ livre.imageCouverture) }}" class="card-img-top" alt="{{ livre.titre }}" style="height: 300px; object-fit: cover;">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300x400?text=Pas+d'image" class="card-img-top" alt="{{ livre.titre }}" style="height: 300px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ livre.titre }}</h5>
+                        <p class="card-text text-truncate">{{ livre.description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-success fs-5">{{ livre.prix }} €</span>
+                            <div class="btn-group">
+                                <a href="{{ path('app_livre_show', {id: livre.id}) }}" class="btn btn-sm btn-outline-primary">Détails</a>
+                                <a href="{{ path('app_cart_add', {id: livre.id}) }}" class="btn btn-sm btn-primary">Ajouter</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted small">
+                        Catégorie: {{ livre.categorie.nom }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

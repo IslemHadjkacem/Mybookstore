@@ -1,0 +1,60 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Dashboard MyBookstore{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-primary mb-4">
+                <div class="card-body text-center">
+                    <i class="fas fa-plus-circle fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title">Ajouter un Livre</h5>
+                    <p class="card-text text-muted">Créer une nouvelle fiche livre.</p>
+                    <a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\LivreCrudController').setAction('new') }}" class="btn btn-primary d-block">Ajouter Nouveau</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-dark mb-4">
+                <div class="card-body text-center">
+                    <i class="fas fa-list fa-3x mb-3 text-dark"></i>
+                    <h5 class="card-title">Liste Livres</h5>
+                    <p class="card-text text-muted">Voir et modifier les livres existants.</p>
+                    <a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\LivreCrudController') }}" class="btn btn-dark d-block">Liste Complète</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-info mb-4">
+                <div class="card-body text-center">
+                    <i class="fas fa-tags fa-3x mb-3 text-info"></i>
+                    <h5 class="card-title">Catégories</h5>
+                    <p class="card-text text-muted">Organisez les genres de livres.</p>
+                    <a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\CategorieCrudController') }}" class="btn btn-info text-white d-block">Aller aux Catégories</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-success mb-4">
+                <div class="card-body text-center">
+                    <i class="fas fa-shopping-cart fa-3x mb-3 text-success"></i>
+                    <h5 class="card-title">Commandes</h5>
+                    <p class="card-text text-muted">Suivez les achats clients.</p>
+                    <a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\CommandeCrudController') }}" class="btn btn-success d-block">Voir Commandes</a>
+                </div>
+            </div>
+        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-md-3">
+                <div class="card shadow-sm border-danger mb-4">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x mb-3 text-danger"></i>
+                        <h5 class="card-title">Utilisateurs</h5>
+                        <p class="card-text text-muted">Gérez les comptes et rôles.</p>
+                        <a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\UserCrudController') }}" class="btn btn-danger d-block">Gérer Utilisateurs</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

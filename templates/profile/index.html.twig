@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil - MyBookstore{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Informations personnelles</h5>
+                    <hr>
+                    {{ form_start(profileForm) }}
+                        {{ form_widget(profileForm) }}
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Mettre à jour</button>
+                    {{ form_end(profileForm) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h3>Historique de mes commandes</h3>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Montant</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commande in commandes %}
+                            <tr>
+                                <td>#{{ commande.id }}</td>
+                                <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
+                                <td>{{ commande.montantTotal }} €</td>
+                                <td>
+                                    <span class="badge {{ commande.statut == 'Validée' ? 'bg-success' : 'bg-warning' }}">
+                                        {{ commande.statut }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center">Vous n'avez pas encore passé de commande.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

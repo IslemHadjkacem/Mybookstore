@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier - MyBookstore{% endblock %}
+
+{% block body %}
+    <h1>Votre Panier</h1>
+
+    {% if items %}
+        <div class="row">
+            <div class="col-md-9">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Livre</th>
+                            <th>Prix</th>
+                            <th>Quantité</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                            <tr>
+                                <td>
+                                    <strong>{{ item.livre.titre }}</strong>
+                                </td>
+                                <td>{{ item.livre.prix }} €</td>
+                                <td>
+                                    <div class="input-group input-group-sm" style="width: 100px;">
+                                        <a href="{{ path('app_cart_remove', {id: item.livre.id}) }}" class="btn btn-outline-secondary">-</a>
+                                        <input type="text" class="form-control text-center" value="{{ item.quantity }}" readonly>
+                                        <a href="{{ path('app_cart_add', {id: item.livre.id}) }}" class="btn btn-outline-secondary">+</a>
+                                    </div>
+                                </td>
+                                <td>{{ (item.livre.prix * item.quantity)|number_format(2, ',', ' ') }} €</td>
+                                <td>
+                                    <a href="{{ path('app_cart_delete', {id: item.livre.id}) }}" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Résumé</h5>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Total</span>
+                            <strong class="fs-4">{{ total|number_format(2, ',', ' ') }} €</strong>
+                        </div>
+                        
+                        {% if is_granted('ROLE_ABONNE') %}
+                            <a href="{{ path('app_cart_validate') }}" class="btn btn-success btn-lg w-100">Valider la commande</a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="btn btn-primary w-100">Se connecter pour valider</a>
+                        {% endif %}
+                        
+                        <a href="{{ path('app_livre_index') }}" class="btn btn-outline-secondary w-100 mt-2">Continuer mes achats</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center my-5">
+            <i class="fas fa-shopping-basket fa-4x text-muted mb-3"></i>
+            <p class="lead">Votre panier est vide.</p>
+            <a href="{{ path('app_livre_index') }}" class="btn btn-primary">Parcourir les livres</a>
+        </div>
+    {% endif %}
+{% endblock %}

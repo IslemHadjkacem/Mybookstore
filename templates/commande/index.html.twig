@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Commandes - MyBookstore{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mb-4"><i class="fas fa-box"></i> Mes Commandes</h1>
+
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle bg-white">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Référence</th>
+                        <th>Date</th>
+                        <th>Articles</th>
+                        <th>Montant Total</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for commande in commandes %}
+                        <tr>
+                            <td class="fw-bold">#{{ commande.id }}</td>
+                            <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
+                            <td>{{ commande.ligneCommandes|length }} article(s)</td>
+                            <td class="text-primary fw-bold">{{ commande.montantTotal }} €</td>
+                            <td>
+                                <span class="badge {{ commande.statut == 'Validée' ? 'bg-success' : 'bg-warning' }}">
+                                    {{ commande.statut }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ path('app_commande_show', {id: commande.id}) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i> Détails
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4">
+                                <p class="text-muted mb-0">Vous n'avez pas encore passé de commande.</p>
+                                <a href="{{ path('app_livre_index') }}" class="btn btn-primary mt-3">Commencer mes achats</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
